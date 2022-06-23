@@ -128,7 +128,7 @@
                                 <select
                                     id="main_activity"
                                     name="main_activity"
-                                    class="form-control @error('main_activity') is-invalid @enderror"
+                                    class="form-select form-control @error('main_activity') is-invalid @enderror"
                                     >
                                     <option value="" disabled selected>Main Activity</option>
                                     <?php use \App\Enum\MainActivityEnum; ?>
