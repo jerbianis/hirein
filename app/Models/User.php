@@ -41,4 +41,20 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    protected $with = ['profile'];
+
+    public function profile()
+    {
+        return $this->morphTo();
+    }
+
+    public function isCandidate()
+    {
+        return $this->profile_type == 'App\Models\Candidate';
+    }
+    public function isEnterprise()
+    {
+        return $this->profile_type == 'App\Models\Enterprise';
+    }
 }

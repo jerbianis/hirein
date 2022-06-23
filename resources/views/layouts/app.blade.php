@@ -33,7 +33,19 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
+                        @auth
+                            @if (auth()->user()->isCandidate())
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('dashboard') }}">Candiadate</a>
+                            </li>
+                            @endif
 
+                            @if (auth()->user()->isEnterprise())
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('dashboard') }}">Quiz</a>
+                                </li>
+                            @endif
+                        @endauth
                     </ul>
 
                     <!-- Right Side Of Navbar -->
