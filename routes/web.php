@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\JobOfferController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/test', function () {
+    //
+    return dd(auth()->user()->profile);
+});
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -20,3 +26,11 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
+
+Route::get('/offers',[JobOfferController::class,''])->middleware(['auth'])->name('offers');
+
+/* Enterprise Dashboard */
+Route::middleware(['auth'])->prefix('dashboard')->group(function () {
+    Route::resource('jobOffer', JobOfferController::class);
+});
+

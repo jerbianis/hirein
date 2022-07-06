@@ -19,4 +19,8 @@ class Enterprise extends Model
     {
         return $this->morphOne('App\Models\User', 'profile');
     }
+
+    public function job_offers() {
+        return $this->hasMany(JobOffer::class);
+    }
 }

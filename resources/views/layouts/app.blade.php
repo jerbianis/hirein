@@ -11,7 +11,7 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
-
+    <script src="https://kit.fontawesome.com/9048424e26.js" crossorigin="anonymous"></script>
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
@@ -42,7 +42,9 @@
 
                             @if (auth()->user()->isEnterprise())
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('dashboard') }}">Quiz</a>
+                                    <a class="nav-link @if (Route::is('jobOffer.index'))
+                                        active
+                                    @endif" href="{{ route('jobOffer.index') }}">My Job Offers</a>
                                 </li>
                             @endif
                         @endauth
