@@ -33,6 +33,11 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link @if (Route::is('offers'))
+                                        active
+                                    @endif" href="{{ route('offers') }}">Offers</a>
+                        </li>
                         @auth
                             @if (auth()->user()->isCandidate())
                             <li class="nav-item">

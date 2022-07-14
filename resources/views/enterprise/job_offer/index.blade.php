@@ -28,7 +28,7 @@
                                 <button class="btn btn-primary" type="submit">Create a Job Offer</button>
                             </form>
                         </div>
-                        @if ($my_job_offers->count() > 0)
+                        @if ($my_job_offers->isNotEmpty())
                             <table class="table">
                                     <tr>
                                         <th>title</th>
@@ -90,7 +90,7 @@
                                 </table>
                             {!! $my_job_offers->links() !!}
                         @else
-                            <h5 class="alert text-center text-decoration-underline">You didn't create any job offer</h5>
+                            <h5 class="alert text-center text-decoration-underline">There is no job offer</h5>
                         @endif
 
                     </div>

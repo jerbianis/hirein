@@ -27,7 +27,7 @@ Auth::routes();
 
 Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
 
-Route::get('/offers',[JobOfferController::class,''])->middleware(['auth'])->name('offers');
+Route::get('/offers',[JobOfferController::class,'public'])->name('offers');
 
 /* Enterprise Dashboard */
 Route::middleware(['auth'])->prefix('dashboard')->group(function () {

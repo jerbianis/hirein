@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Models\JobOffer;
 use App\Http\Requests\StoreJobOfferRequest;
 use App\Http\Requests\UpdateJobOfferRequest;
-use Illuminate\Validation\Rule;
+use Carbon\Carbon;
 
 class JobOfferController extends Controller
 {
@@ -21,6 +22,29 @@ class JobOfferController extends Controller
     }
 
     /**
+     * Display a public listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function public()
+    {
+        //
+        $job_offers=JobOffer::with('enterprise')
+            ->where('visibility',true)
+            ->where('offer_start_on','<=',Carbon::now())
+            ->where(function ($query) {
+                $query->where('offer_ends_on','>=',Carbon::now())
+                ->orwhere('offer_ends_on',null);
+            })
+            ->orderByDesc('offer_start_on')
+            ->paginate(6);
+
+        return view('offers',[
+            'my_job_offers' => $job_offers
+        ]);
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -28,7 +52,9 @@ class JobOfferController extends Controller
     public function index()
     {
         //
-        $my_job_offers=JobOffer::where('enterprise_id',auth()->user()->profile->id)->paginate(5);
+        $my_job_offers=JobOffer::where('enterprise_id',auth()->user()->profile->id)
+            ->latest()
+            ->paginate(5);
         return view('enterprise.job_offer.index',[
             'my_job_offers' => $my_job_offers
         ]);
