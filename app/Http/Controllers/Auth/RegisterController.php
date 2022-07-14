@@ -77,24 +77,24 @@ class RegisterController extends Controller
     {
         if ($data['role'] == 'candidate') {
             $user = User::create([
-                'name' => $data['name'],
                 'email' => $data['email'],
                 'password' => Hash::make($data['password']),
             ]);
 
             $candidate = Candidate::create([
+                'name' => $data['name'],
                 'birth_date' => $data['birth_date'],
                 'job_title' => $data['job_title']
             ]);
             $candidate->user()->save($user);
         }else if ($data['role'] == 'enterprise') {
             $user = User::create([
-                'name' => $data['name'],
                 'email' => $data['email'],
                 'password' => Hash::make($data['password']),
             ]);
             $user->save();
             $enterprise = Enterprise::create([
+                'name' => $data['name'],
                 'main_activity' => MainActivityEnum::getValue($data['main_activity']),
                 'manager_name' => $data['manager_name']
             ]);

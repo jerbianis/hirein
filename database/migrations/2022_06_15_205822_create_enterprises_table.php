@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('enterprises', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
             $table->string('main_activity');
             $table->text('description')->nullable();
             $table->string('manager_name')->nullable();
