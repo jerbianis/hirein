@@ -16,7 +16,12 @@ class JobOffer extends Model
         'type'  =>  OfferTypeEnum::class,
         'degree'=>  DegreeTypeEnum::class
     ];
+
     public function enterprise() {
         return $this->belongsTo(Enterprise::class);
     }
+    public function candidatures () {
+        return $this->hasMany(Candidature::class);
+    }
+
 }

@@ -41,7 +41,9 @@
                         @auth
                             @if (auth()->user()->isCandidate())
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('dashboard') }}">Candiadate</a>
+                                <a class="nav-link @if (Route::is('candidature.index'))
+                                    active
+                                @endif" href="{{ route('candidature.index') }}">Candidatures</a>
                             </li>
                             @endif
 

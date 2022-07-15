@@ -7,6 +7,8 @@ use App\Models\JobOffer;
 use App\Http\Requests\StoreJobOfferRequest;
 use App\Http\Requests\UpdateJobOfferRequest;
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 
 class JobOfferController extends Controller
 {
@@ -37,10 +39,17 @@ class JobOfferController extends Controller
                 ->orwhere('offer_ends_on',null);
             })
             ->orderByDesc('offer_start_on')
-            ->paginate(6);
+            ->paginate(5);
+
+        $job_offer_ids = null;
+        if (!Auth::guest() and Auth::user()->isCandidate()) {
+            $candidatures= auth()->user()->profile->candidatures;
+            $job_offer_ids= Arr::pluck($candidatures,'job_offer_id');
+        }
 
         return view('offers',[
-            'my_job_offers' => $job_offers
+            'my_job_offers' => $job_offers,
+            'job_offer_ids' => $job_offer_ids
         ]);
     }
 

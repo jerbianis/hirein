@@ -74,26 +74,61 @@
                                         </td>
                                         @guest()
                                             <td>
-                                                <form method="GET" action="">
-                                                    <button type="submit" class="btn btn-primary">Apply</button>
+                                                <form action="{{route('register')}}">
+                                                <button type="submit" class="btn btn-primary">Apply</button>
                                                 </form>
                                             </td>
                                         @endguest
                                         @auth
                                             @if (auth()->user()->isCandidate())
+
                                                 <td>
-                                                    <form method="GET" action="">
-                                                        <button type="submit" class="btn btn-primary">Apply</button>
-                                                    </form>
+                                                    <!-- Button trigger modal -->
+                                                    <button type="button"
+                                                            class="btn btn-primary"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#exampleModal{{$offer->id}}"
+                                                            @if (in_array($offer->id,$job_offer_ids))
+                                                                disabled
+                                                            @endif
+                                                    >Apply</button>
                                                 </td>
+
                                             @endif
                                         @endauth
 
-
-
-
-
                                     </tr>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="exampleModal{{$offer->id}}" tabindex="-1" aria-labelledby="exampleModalLabel{{$offer->id}}" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                            <div class="modal-content">
+                                                <form method="POST" action="{{route('candidature.store')}}">
+                                                    @csrf
+                                                    <input type="hidden" name="offer" value="{{$offer->id}}">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel{{$offer->id}}">Cover Letter</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="row mb-3">
+                                                                <textarea id="cover_letter{{$offer->id}}" class="form-control @error('cover_letter') is-invalid @enderror" name="cover_letter" autocomplete="cover_letter" autofocus>{{ old('cover_letter') }}</textarea>
+                                                                @error('cover_letter')
+                                                                <span class="invalid-feedback" role="alert">
+                                                                    <strong>{{ $message }}</strong>
+                                                                </span>
+                                                                @enderror
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-primary">Submit the application</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 @endforeach
                             </table>
                             {!! $my_job_offers->links() !!}

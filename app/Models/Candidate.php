@@ -15,4 +15,8 @@ class Candidate extends Model
     {
         return $this->morphOne('App\Models\User', 'profile');
     }
+
+    public function candidatures () {
+        return $this->hasMany(Candidature::class);
+    }
 }
