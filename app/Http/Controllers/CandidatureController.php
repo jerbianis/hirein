@@ -65,29 +65,6 @@ class CandidatureController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Candidature  $candidature
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Candidature $candidature)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateCandidatureRequest  $request
-     * @param  \App\Models\Candidature  $candidature
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateCandidatureRequest $request, Candidature $candidature)
-    {
-        //
-    }
-
-    /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Candidature  $candidature

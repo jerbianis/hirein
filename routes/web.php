@@ -1,7 +1,12 @@
 <?php
 
+use App\Enum\CandidatureStatusEnum;
 use App\Http\Controllers\CandidatureController;
 use App\Http\Controllers\JobOfferController;
+use App\Http\Controllers\ManageCandidatureController;
+use App\Models\Candidature;
+use App\Models\JobOffer;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/test', function () {
     //
-    return dd(auth()->user()->profile);
+    return '';
 });
 
 Route::get('/', function () {
@@ -33,6 +38,9 @@ Route::get('/offers',[JobOfferController::class,'public'])->name('offers');
 /* Enterprise Dashboard */
 Route::middleware(['auth'])->prefix('dashboard')->group(function () {
     Route::resource('jobOffer', JobOfferController::class);
+    Route::get('jobOffer/{jobOffer}/candidatures', [ManageCandidatureController::class,'index'])->name('jobOffer.candidatures.index');
+    Route::put('jobOffer/{jobOffer}/candidatures/{candidature}',[ManageCandidatureController::class,'update'])->name('jobOffer.candidatures.update');
+    Route::patch('jobOffer/{jobOffer}/candidatures/',[ManageCandidatureController::class,'reject_the_rest'])->name('jobOffer.candidatures.reject_the_rest');
 });
 
 

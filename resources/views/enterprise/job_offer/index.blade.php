@@ -40,6 +40,7 @@
                                         <th>visibility</th>
                                         <th>start on</th>
                                         <th>ends on</th>
+                                        <th>candidatures</th>
                                         <th>show</th>
                                         <th>update</th>
                                         <th>delete</th>
@@ -68,6 +69,16 @@
 
                                             <td>{{$offer->offer_start_on}}</td>
                                             <td>{{$offer->offer_ends_on}}</td>
+                                            <td>
+
+                                                    @if ($offer->candidatures->count())
+                                                    <form method="GET" action="{{route('jobOffer.candidatures.index',$offer)}}">
+                                                        <button type="submit" class="btn btn-outline-primary">{{$offer->candidatures->count()}}</button>
+                                                    </form>
+                                                    @else
+                                                        <button type="button" class="btn btn-outline-warning" disabled>{{$offer->candidatures->count()}}</button>
+                                                    @endif
+                                            </td>
                                             <td>
                                                 <form method="GET" action="{{route('jobOffer.show',$offer)}}">
                                                     <button type="submit" class="btn"><i class="fa-solid fa-eye" style="color: blue;"></i></button>

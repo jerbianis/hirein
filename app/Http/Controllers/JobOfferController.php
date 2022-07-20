@@ -61,7 +61,7 @@ class JobOfferController extends Controller
     public function index()
     {
         //
-        $my_job_offers=JobOffer::where('enterprise_id',auth()->user()->profile->id)
+        $my_job_offers=JobOffer::with('candidatures')->where('enterprise_id',auth()->user()->profile->id)
             ->latest()
             ->paginate(5);
         return view('enterprise.job_offer.index',[

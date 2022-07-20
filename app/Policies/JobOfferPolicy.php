@@ -98,4 +98,17 @@ class JobOfferPolicy
         //
         return $user->profile->id === $jobOffer->enterprise_id;
     }
+
+    /**
+     * Determine whether the user can delete the model.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\JobOffer  $jobOffer
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function reject_the_rest(User $user, JobOffer $jobOffer)
+    {
+        //
+        return $user->profile->id === $jobOffer->enterprise_id;
+    }
 }

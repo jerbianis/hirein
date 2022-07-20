@@ -3,12 +3,28 @@
 namespace App\Policies;
 
 use App\Models\Candidature;
+use App\Models\JobOffer;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class CandidaturePolicy
 {
     use HandlesAuthorization;
+
+
+    /**
+     * Determine whether the user can view any models.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\JobOffer $jobOffer
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function viewAnyEnterprise(User $user,JobOffer $jobOffer)
+    {
+        //
+        return ($user->profile->id === $jobOffer->enterprise->id);
+    }
+
 
     /**
      * Determine whether the user can view any models.
@@ -56,6 +72,7 @@ class CandidaturePolicy
     public function update(User $user, Candidature $candidature)
     {
         //
+        return $user->profile->id === $candidature->job_offer->enterprise_id;
     }
 
     /**
