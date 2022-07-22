@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('main_activity');
             $table->text('description')->nullable();
             $table->string('manager_name')->nullable();
-            $table->boolean('is_open_for_hiring')->nullable();
+            $table->boolean('is_open_for_hiring')->default(false);
             $table->timestamps();
         });
     }

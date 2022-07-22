@@ -1,12 +1,10 @@
 <?php
 
-use App\Enum\CandidatureStatusEnum;
+
 use App\Http\Controllers\CandidatureController;
 use App\Http\Controllers\JobOfferController;
 use App\Http\Controllers\ManageCandidatureController;
-use App\Models\Candidature;
-use App\Models\JobOffer;
-use Carbon\Carbon;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,6 +32,18 @@ Auth::routes();
 Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
 
 Route::get('/offers',[JobOfferController::class,'public'])->name('offers');
+
+
+/* Profile Auth*/
+Route::middleware(['auth'])->group(function () {
+    Route::get('profile/{user}',[ProfileController::class,'show'])->name('profile.show');
+    Route::get('/myprofile/edit/',[ProfileController::class,'edit'])->name('profile.edit');
+});
+
+/* Profile Candidate*/
+Route::middleware(['auth'])->group(function () {
+    Route::patch('/myprofile/edit/picture',[ProfileController::class,'uploadpicture'])->name('profile.edit.picture');
+});
 
 /* Enterprise Dashboard */
 Route::middleware(['auth'])->prefix('dashboard')->group(function () {

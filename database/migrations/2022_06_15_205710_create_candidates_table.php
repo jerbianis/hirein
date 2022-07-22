@@ -20,7 +20,7 @@ return new class extends Migration
             $table->text('profile_resume')->nullable();
             $table->string('job_title')->nullable();
             $table->string('CV_file')->nullable();
-            $table->boolean('is_open_for_job')->nullable();
+            $table->boolean('is_open_for_job')->default(false);
             $table->timestamps();
         });
     }
