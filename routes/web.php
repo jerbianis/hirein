@@ -42,7 +42,12 @@ Route::middleware(['auth'])->group(function () {
 
 /* Profile Candidate*/
 Route::middleware(['auth'])->group(function () {
+    Route::put('/myprofile/edit/candidate',[ProfileController::class,'updateCandidate'])->name('profile.edit.candidate');
     Route::patch('/myprofile/edit/picture',[ProfileController::class,'uploadpicture'])->name('profile.edit.picture');
+    Route::delete('/myprofile/edit/picture/delete',[ProfileController::class,'deletePicture'])->name('profile.delete.picture');
+    Route::patch('/myprofile/edit/cv',[ProfileController::class,'uploadCV'])->name('profile.edit.cv');
+    Route::delete('/myprofile/edit/cv/delete',[ProfileController::class,'deleteCV'])->name('profile.delete.cv');
+
 });
 
 /* Enterprise Dashboard */

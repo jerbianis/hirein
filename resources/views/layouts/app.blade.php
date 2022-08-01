@@ -79,7 +79,9 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{route('profile.edit')}}">
+                                    <a class="dropdown-item @if (Route::is('profile.edit'))
+                                    active
+                                    @endif" href="{{route('profile.edit')}}">
                                     Edit
                                     </a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"

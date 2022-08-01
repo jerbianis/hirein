@@ -39,8 +39,15 @@
                             </div>
                             <button type="submit" id="button1" class="btn btn-primary" disabled>Upload Picture</button>
                         </form>
-
-                        <form action="">
+                        @if ($candidate->picture != 'picture.jpg')
+                            <form method="POST" action="{{route('profile.delete.picture')}}">
+                                @method('DELETE')
+                                @csrf
+                                <button type="submit" class="btn btn-danger">Delete Picture</button>
+                            </form>
+                        @endif
+                        <form method="POST" action="{{route('profile.edit.candidate')}}">
+                            @method('PUT')
                             @csrf
 
                             <div class="row mb-3">
@@ -113,7 +120,16 @@
                             </div>
                             <button type="submit" id="button2" class="btn btn-primary" disabled>Update Profile Information</button>
                         </form>
-                        <form action="" enctype="multipart/form-data">
+
+                        @if ($candidate->CV_file)
+                        <div class="ratio ratio-4x3 my-1">
+                            <iframe src="{{asset('storage/CV/'.$candidate->CV_file)}}#view=FitH" >
+                                This browser does not support PDFs.
+                            </iframe>
+                        </div>
+                        @endif
+                        <form method="POST" action="{{route('profile.edit.cv')}}" enctype="multipart/form-data">
+                            @method('PATCH')
                             @csrf
                             <div class="row mb-3">
                                 <label for="CV_file" class="col-md-4 col-form-label text-md-end">CV PDF</label>
@@ -129,6 +145,13 @@
                             </div>
                             <button type="submit" id="button3" class="btn btn-primary" disabled>Upload CV</button>
                         </form>
+                        @if ($candidate->CV_file)
+                            <form method="POST" action="{{route('profile.delete.cv')}}">
+                                @method('DELETE')
+                                @csrf
+                                <button type="submit" class="btn btn-danger">Delete CV</button>
+                            </form>
+                        @endif
                         <script>
                             function enableButton(x) {
                                 document.getElementById('button'+x).disabled=false;
