@@ -8,7 +8,13 @@
                     <div class="card-header">Edit Enterprise Profile</div>
 
                     <div class="card-body">
-                        <form action="" enctype="multipart/form-data">
+                        <img
+                            src="{{asset('storage/logo/'.$enterprise->logo)}}"
+                            class="mx-auto d-block img-thumbnail rounded-circle w-25 mb-3"
+                            alt="enterprise logo"
+                        >
+                        <form method="POST" action="{{route('profile.edit.logo')}}" enctype="multipart/form-data">
+                            @method('PATCH')
                             @csrf
                             <div class="row mb-3">
                                 <label for="logo" class="col-md-4 col-form-label text-md-end">Logo</label>
@@ -30,7 +36,15 @@
                             </div>
                             <button type="submit" id="button1" class="btn btn-primary" disabled>Upload Logo</button>
                         </form>
-                        <form action="">
+                        @if ($enterprise->logo != 'logo.jpg')
+                            <form method="POST" action="{{route('profile.delete.logo')}}">
+                                @method('DELETE')
+                                @csrf
+                                <button type="submit" class="btn btn-danger">Delete Logo</button>
+                            </form>
+                        @endif
+                        <form method="POST" action="{{route('profile.edit.enterprise')}}">
+                            @method('PUT')
                             @csrf
                             <div class="row mb-3">
                                 <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name') }} <span class="text-danger">*</span></label>
@@ -61,8 +75,7 @@
                                         class="form-select form-control @error('main_activity') is-invalid @enderror"
                                         oninput="enableButton(2)"
                                     >
-                                        <?php use \App\Enum\MainActivityEnum; ?>
-                                        @foreach(MainActivityEnum::cases() as $option)
+                                        @foreach(\App\Enum\MainActivityEnum::cases() as $option)
                                             <option
                                                 value="{{$option->name}}"
                                                 @if ($option->name === $enterprise->main_activity->name)

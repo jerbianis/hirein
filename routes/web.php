@@ -50,6 +50,14 @@ Route::middleware(['auth'])->group(function () {
 
 });
 
+/* Enterprise Candidate*/
+Route::middleware(['auth'])->group(function () {
+    Route::put('/myprofile/edit/enterprise',[ProfileController::class,'updateEnterprise'])->name('profile.edit.enterprise');
+    Route::patch('/myprofile/edit/logo',[ProfileController::class,'uploadLogo'])->name('profile.edit.logo');
+    Route::delete('/myprofile/edit/logo/delete',[ProfileController::class,'deleteLogo'])->name('profile.delete.logo');
+
+});
+
 /* Enterprise Dashboard */
 Route::middleware(['auth'])->prefix('dashboard')->group(function () {
     Route::resource('jobOffer', JobOfferController::class);
