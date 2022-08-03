@@ -8,6 +8,16 @@
                     <div class="card-header">Edit Enterprise Profile</div>
 
                     <div class="card-body">
+                        @if (session('status'))
+                            <div class="alert alert-success" role="alert">
+                                {{ session('status') }}
+                            </div>
+                        @endif
+                        @if (session('status-danger'))
+                            <div class="alert alert-danger" role="alert">
+                                {{ session('status-danger') }}
+                            </div>
+                        @endif
                         <img
                             src="{{asset('storage/logo/'.$enterprise->logo)}}"
                             class="mx-auto d-block img-thumbnail rounded-circle w-25 mb-3"

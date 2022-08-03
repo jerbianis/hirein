@@ -9,7 +9,16 @@
 
 
                     <div class="card-body">
-
+                        @if (session('status'))
+                            <div class="alert alert-success" role="alert">
+                                {{ session('status') }}
+                            </div>
+                        @endif
+                        @if (session('status-danger'))
+                            <div class="alert alert-danger" role="alert">
+                                {{ session('status-danger') }}
+                            </div>
+                        @endif
                         <img
                             src="{{asset('storage/profile_pictures/'.$candidate->picture)}}"
                             class="mx-auto d-block img-thumbnail rounded-circle w-25 mb-3"

@@ -64,6 +64,7 @@ class ProfileController extends Controller
             $image->widen(500)->resizeCanvas(500,500)->encode('jpg')->save();
             $candidate->picture =$name;
             $candidate->save();
+            $request->session()->flash('status', 'Picture Uploaded Successfully');
         }
         return back();
 
@@ -87,6 +88,7 @@ class ProfileController extends Controller
 
             $candidate->CV_file =$name;
             $candidate->save();
+            $request->session()->flash('status', 'CV Uploaded Successfully');
         }
         return back();
 
@@ -103,6 +105,7 @@ class ProfileController extends Controller
             Storage::delete('public/CV/'.$candidate->CV_file);
             $candidate->CV_file =null;
             $candidate->save();
+            \request()->session()->flash('status-danger', 'CV Deleted Successfully');
         }
 
         return back();
@@ -119,6 +122,7 @@ class ProfileController extends Controller
             Storage::delete('public/profile_pictures/'.$candidate->picture);
             $candidate->picture ="picture.jpg";
             $candidate->save();
+            \request()->session()->flash('status-danger', 'CV Deleted Successfully');
         }
 
         return back();
@@ -149,6 +153,7 @@ class ProfileController extends Controller
         $candidate = Candidate::find($user->profile->id);
         $candidate->update($request->all());
         $candidate->save();
+        $request->session()->flash('status', 'Profile Updated Successfully');
         return back();
     }
 
@@ -171,6 +176,7 @@ class ProfileController extends Controller
             $image->widen(500)->resizeCanvas(500,500)->encode('jpg')->save();
             $enterprise->logo =$name;
             $enterprise->save();
+            $request->session()->flash('status', 'Logo Uploaded Successfully');
         }
         return back();
 
@@ -187,6 +193,7 @@ class ProfileController extends Controller
             Storage::delete('public/logo/'.$enterprise->logo);
             $enterprise->logo ="logo.jpg";
             $enterprise->save();
+            \request()->session()->flash('status-danger', 'Logo Deleted Successfully');
         }
 
         return back();
@@ -221,6 +228,7 @@ class ProfileController extends Controller
 
         $enterprise->update($request->all());
         $enterprise->save();
+        $request->session()->flash('status', 'Profile Updated Successfully');
         return back();
     }
 }
