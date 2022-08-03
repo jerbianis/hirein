@@ -73,8 +73,7 @@
                                         class="form-select form-control @error('type') is-invalid @enderror"
                                     >
                                         <option value="" disabled selected>Offer Type</option>
-                                        <?php use \App\Enum\OfferTypeEnum; ?>
-                                        @foreach(OfferTypeEnum::cases() as $option)
+                                        @foreach(\App\Enum\OfferTypeEnum::cases() as $option)
                                             <option value="{{$option->name}}" >{{$option->value}}</option>
                                         @endforeach
                                     </select>
@@ -95,8 +94,7 @@
                                         class="form-select form-control @error('degree') is-invalid @enderror"
                                     >
                                         <option value="" disabled selected>Degree</option>
-                                        <?php use \App\Enum\DegreeTypeEnum; ?>
-                                        @foreach(DegreeTypeEnum::cases() as $option)
+                                        @foreach(\App\Enum\DegreeTypeEnum::cases() as $option)
                                             <option value="{{$option->name}}" >{{$option->value}}</option>
                                         @endforeach
                                     </select>
