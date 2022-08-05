@@ -179,15 +179,15 @@
         if (document.getElementById("enterprise").checked) {
             candidate[0].style.display = "none";
             candidate[1].style.display = "none";
-            enterprise[0].style.display = "block";
-            enterprise[1].style.display = "block";
+            enterprise[0].style.display = "flex";
+            enterprise[1].style.display = "flex";
             document.getElementById("main_activity").required = true;
             document.getElementById("birth_date").required = false;
         } else {
             enterprise[0].style.display = "none";
             enterprise[1].style.display = "none";
-            candidate[0].style.display = "block";
-            candidate[1].style.display = "block";
+            candidate[0].style.display = "flex";
+            candidate[1].style.display = "flex";
             document.getElementById("main_activity").required = false;
             document.getElementById("birth_date").required = true;
         }
