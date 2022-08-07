@@ -1,144 +1,122 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-9">
-                <div class="card">
-                    <div class="card-header">Job Offers</div>
 
-                    <div class="card-body">
-                        @if (session('status'))
-                            <div class="alert alert-success" role="alert">
-                                {{ session('status') }}
-                            </div>
-                        @endif
-                        @if (session('status-warning'))
-                            <div class="alert alert-warning" role="alert">
-                                {{ session('status-warning') }}
-                            </div>
-                        @endif
-                        @if (session('status-danger'))
-                            <div class="alert alert-danger" role="alert">
-                                {{ session('status-danger') }}
-                            </div>
-                        @endif
-
-                        @if ($my_job_offers->isNotEmpty())
-                            <table class="table">
-                                <tr>
-                                    <th>enterprise</th>
-                                    <th>title</th>
-                                    <th>description</th>
-                                    <th>city</th>
-                                    <th>type</th>
-                                    <th>degree</th>
-                                    <th>number of positions</th>
-                                    <th>start on</th>
-                                    <th>ends on</th>
-                                    <th>show</th>
-                                    @guest()
-                                        <th>Apply</th>
-                                    @endguest
-                                    @auth()
-                                        @if (auth()->user()->isCandidate())
-                                            <th>Apply</th>
-                                        @endif
-                                    @endauth
+                    
+@if ($my_job_offers->isNotEmpty())
 
 
-                                </tr>
-                                @foreach($my_job_offers as $offer)
-                                    <tr>
-                                        <td>{{$offer->enterprise->name}}</td>
-                                        <td>{{$offer->title}}</td>
-                                        <td>{{\Illuminate\Support\Str::limit($offer->description,50,'...')}}</td>
-                                        <td>{{$offer->city}}</td>
-                                        @if ($offer->type == null)
-                                            <td></td>
-                                        @else
-                                            <td>{{$offer->type->value}}</td>
-                                        @endif
-                                        @if ($offer->degree == null)
-                                            <td></td>
-                                        @else
-                                            <td>{{$offer->degree->value}}</td>
-                                        @endif
-                                        <td>{{$offer->number_of_positions}}</td>
-                                        <td>{{$offer->offer_start_on}}</td>
-                                        <td>{{$offer->offer_ends_on}}</td>
-                                        <td>
-                                            <form method="GET" action="">
-                                                <button type="submit" class="btn"><i class="fa-solid fa-eye" style="color: blue;"></i></button>
-                                            </form>
-                                        </td>
-                                        @guest()
-                                            <td>
-                                                <form action="{{route('register')}}">
-                                                <button type="submit" class="btn btn-primary">Apply</button>
-                                                </form>
-                                            </td>
-                                        @endguest
-                                        @auth
-                                            @if (auth()->user()->isCandidate())
 
-                                                <td>
-                                                    <!-- Button trigger modal -->
-                                                    <button type="button"
-                                                            class="btn btn-primary"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#exampleModal{{$offer->id}}"
-                                                            @if (in_array($offer->id,$job_offer_ids))
-                                                                disabled
-                                                            @endif
-                                                    >Apply</button>
-                                                </td>
+<div class="container">
+    @foreach($my_job_offers as $offer)
+    <div class="row justify-content-center">
+        <div class="col-md-9">
+            <div class="card mb-3" style="padding: 8px 16px" >
+                <div class="row g-0">
+                  <div class="col-md-3" style="display: grid; place-items: center" >
+                        <img src="https://media-exp1.licdn.com/dms/image/C560BAQG64h2GTecOuw/company-logo_100_100/0/1519873360054?e=1668038400&v=beta&t=ar9UZMABCfTWuAVzaZnKbhLQzIrn0N24Rm98VFgEXdE" class="img-fluid rounded-start" alt="...">
+                    </div>
+                  <div class="col-md-7">
+                    <div class="card-body" style="padding: 0.3rem 1rem" >
+                        <button class="btn" style="padding: 0"  ><h5 class="card-title" style="color: #0a66c2;font-weight: bold;font-size: 20px;" >{{$offer->title}}</h5></button>
+                        <div style="display: flex;flex-direction:row;align-items:center;margin-top:-8px;" >
+                           
+                            <p class="card-text" style="font-size: 12px;color:#6C757D" >
+                              
+                                Tunisia @if ($offer->city) ,{{$offer->city}} @endif.
+                          
+                              </p>&nbsp;&nbsp;
+                              <p class="card-text"  style="font-size: 12px;color:#6C757D" >
+                                3 months ago
+                              </p>
+                        </div>
+                        
+                      <p class="card-text" style="margin-bottom: 0;font-size: 18px" >{{$offer->enterprise->name}}</p>
 
-                                            @endif
-                                        @endauth
-
-                                    </tr>
-
-                                    <!-- Modal -->
-                                    <div class="modal fade" id="exampleModal{{$offer->id}}" tabindex="-1" aria-labelledby="exampleModalLabel{{$offer->id}}" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                                            <div class="modal-content">
-                                                <form method="POST" action="{{route('candidature.store')}}">
-                                                    @csrf
-                                                    <input type="hidden" name="offer" value="{{$offer->id}}">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel{{$offer->id}}">Cover Letter</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <div class="row mb-3">
-                                                                <textarea id="cover_letter{{$offer->id}}" class="form-control @error('cover_letter') is-invalid @enderror" name="cover_letter" autocomplete="cover_letter" autofocus>{{ old('cover_letter') }}</textarea>
-                                                                @error('cover_letter')
-                                                                <span class="invalid-feedback" role="alert">
-                                                                    <strong>{{ $message }}</strong>
-                                                                </span>
-                                                                @enderror
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                        <button type="submit" class="btn btn-primary">Submit the application</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                @endforeach
-                            </table>
-                            {!! $my_job_offers->links() !!}
-                        @else
-                            <h5 class="alert text-center text-decoration-underline">There is no job offer</h5>
-                        @endif
+                      <p class="card-text" style="font-size: 14px; margin: 8px 0" >
+                        {{\Illuminate\Support\Str::limit($offer->description,100,'...')}}
+                      </p>
+                      @if($offer->offer_ends_on)
+                      <p class="card-text" style="font-size: 13px" >
+                        <i class="fa-solid fa-business-time" style="color:#5f6163; font-size: 13px" ></i>
+                        &nbsp; Ends at {{$offer->offer_ends_on}}
+                      </p>
+                      @endif
 
                     </div>
+                  </div>
+                   
+                  <div class="col-md-2" style="display: grid; place-items: center" >
+                    @guest()
+  
+                                            <form action="{{route('register')}}">
+                                            <button type="submit" class="btn btn-primary">Apply</button>
+                                            </form>
+
+                     @endguest
+                    @auth
+                    @if (auth()->user()->isCandidate())
+                            <!-- Button trigger modal -->
+                            <button type="button"
+                                    class="btn btn-primary"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal{{$offer->id}}"
+                                    @if (in_array($offer->id,$job_offer_ids))
+                                        disabled
+                                    @endif
+                            >Apply</button>
+                    @endif
+                @endauth
+                  </div>
                 </div>
             </div>
         </div>
     </div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal{{$offer->id}}" tabindex="-1" aria-labelledby="exampleModalLabel{{$offer->id}}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <form method="POST" action="{{route('candidature.store')}}">
+                @csrf
+                <input type="hidden" name="offer" value="{{$offer->id}}">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel{{$offer->id}}">Cover Letter</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                            <textarea id="cover_letter{{$offer->id}}" class="form-control @error('cover_letter') is-invalid @enderror" name="cover_letter" autocomplete="cover_letter" autofocus>{{ old('cover_letter') }}</textarea>
+                            @error('cover_letter')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Submit the application</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endforeach
+
+<div class="col-md-9;" >{!! $my_job_offers->links() !!}</div>
+
+
+</div>
+
+         
+
+
+@else
+    <h5 class="alert text-center text-decoration-underline">There is no job offer</h5>
+@endif
+
+
+
 @endsection

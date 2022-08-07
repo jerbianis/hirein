@@ -110,5 +110,27 @@
             @yield('content')
         </main>
     </div>
+    <div style="
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+   
+" >
+    @if (session('status'))
+    <div class="alert alert-success" role="alert" style=" margin: 0" >
+        {{ session('status') }}
+    </div>
+@endif
+@if (session('status-warning'))
+    <div class="alert alert-warning" role="alert" style=" margin: 0">
+        {{ session('status-warning') }}
+    </div>
+@endif
+@if (session('status-danger'))
+    <div class="alert alert-danger" role="alert" style=" margin: 0">
+        {{ session('status-danger') }}
+    </div>
+@endif</div>
 </body>
 </html>
