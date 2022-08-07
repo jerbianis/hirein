@@ -23,4 +23,8 @@ class Enterprise extends Model
     public function job_offers() {
         return $this->hasMany(JobOffer::class);
     }
+
+    public function questions() {
+        return $this->hasMany(Question::class);
+    }
 }

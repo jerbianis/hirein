@@ -53,6 +53,11 @@
                                         active
                                     @endif" href="{{ route('jobOffer.index') }}">My Job Offers</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link @if (Route::is('question.index'))
+                                    active
+                                @endif" href="{{ route('question.index') }}">Questions</a>
+                                </li>
                             @endif
                         @endauth
                     </ul>

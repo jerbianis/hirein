@@ -40,11 +40,12 @@
                                 id="status"
                                 name="status"
                                 class="form-select form-control @error('status') is-invalid @enderror"
-                                onchange="enableButton({{$candidature->id}})"
+                                onchange="enableButton({{$candidature->id}});showInterviewInputs({{$candidature->id}});"
                                 >
                                 @foreach(\App\Enum\CandidatureStatusEnum::cases() as $option)
                                     <option
                                         value="{{$option->name}}"
+                                        id="{{$option->name}}{{$candidature->id}}"
                                         @if ($option->value === \App\Enum\CandidatureStatusEnum::New->value)
                                             disabled
                                         @endif
@@ -54,6 +55,10 @@
                                     >{{$option->value}}</option>
                                 @endforeach
                             </select>
+                                <div id="interview{{$candidature->id}}" style="display: none;">
+                                    <input type="text" name="emails">
+                                    <input type="datetime-local" name="start_on">
+                                </div>
                                 <button id="button{{$candidature->id}}" type="submit" class="btn btn-outline-secondary" disabled>Change Status</button>
                             </form>
                             <hr>
@@ -61,6 +66,16 @@
                         <script>
                             function enableButton(x) {
                                 document.getElementById('button'+x).disabled=false;
+                            }
+
+                            function showInterviewInputs(x) {
+                                console.log(document.getElementById('Interview'+x).selected);
+                                if (document.getElementById('Interview'+x).selected){
+                                    document.getElementById('interview'+x).style.display="initial";
+                                }else {
+                                    document.getElementById('interview'+x).style.display="none";
+                                }
+
                             }
                         </script>
                     </div>

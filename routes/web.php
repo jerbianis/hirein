@@ -2,9 +2,11 @@
 
 
 use App\Http\Controllers\CandidatureController;
+use App\Http\Controllers\InterviewController;
 use App\Http\Controllers\JobOfferController;
 use App\Http\Controllers\ManageCandidatureController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\QuestionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,7 +22,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/test', function () {
     //
-    return '';
+    $to_name = "Anis";
+    $to_email = "anisjerbi2@gmail.com";
+    $data = array("name" => "Anis", "body" => "this is a test");
+    Mail::send('emails.mail',$data,function ($msg) use ($to_name,$to_email) {
+        $msg->to($to_email, $to_name)->subject("Laravel Test Mail");
+    });
+    return to_route('/');
 });
 
 Route::get('/', function () {
@@ -50,7 +58,7 @@ Route::middleware(['auth'])->group(function () {
 
 });
 
-/* Enterprise Candidate*/
+/* Profile Enterprise*/
 Route::middleware(['auth'])->group(function () {
     Route::put('/myprofile/edit/enterprise',[ProfileController::class,'updateEnterprise'])->name('profile.edit.enterprise');
     Route::patch('/myprofile/edit/logo',[ProfileController::class,'uploadLogo'])->name('profile.edit.logo');
@@ -64,6 +72,7 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
     Route::get('jobOffer/{jobOffer}/candidatures', [ManageCandidatureController::class,'index'])->name('jobOffer.candidatures.index');
     Route::put('jobOffer/{jobOffer}/candidatures/{candidature}',[ManageCandidatureController::class,'update'])->name('jobOffer.candidatures.update');
     Route::patch('jobOffer/{jobOffer}/candidatures/',[ManageCandidatureController::class,'reject_the_rest'])->name('jobOffer.candidatures.reject_the_rest');
+    Route::resource('question', QuestionController::class);
 });
 
 
@@ -78,3 +87,6 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
     Route::get('/candidature',[CandidatureController::class,'index'])->name('candidature.index');
     Route::delete('/candidature/{candidature}',[CandidatureController::class,'destroy'])->name('candidature.destroy');
 });
+
+
+Route::get('/interview/{interview}', [InterviewController::class,'interview']);

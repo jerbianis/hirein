@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Enum\CandidatureStatusEnum;
+use App\Events\CandidatureStatusUpdated;
 use App\Http\Requests\UpdateCandidatureRequest;
 use App\Models\Candidature;
+use App\Models\Interview;
 use App\Models\JobOffer;
 
 class ManageCandidatureController extends Controller
@@ -75,6 +77,27 @@ class ManageCandidatureController extends Controller
         if ($candidature->update(['status'=> $request->status])) {
             $request->session()->flash('status', 'Status Changed Successfully');
         }
+        if ($candidature->status == CandidatureStatusEnum::Interview) {
+            $request->validate([
+                'start_on'=>['required','date','after_or_equal:today']
+            ]);
+
+            if ($interview= $candidature->interview()->first()) {
+                $interview->update([
+                    'candidature_id' => $candidature->id,
+                    'invited_email_list' => $request->emails,
+                    'start_on'=> $request->start_on
+                ]);
+            }else {
+                $interview = Interview::create([
+                    'candidature_id' => $candidature->id,
+                    'invited_email_list' => $request->emails,
+                    'start_on'=> $request->start_on
+                ]);
+            }
+
+            $interview->save();
+        }
 
         $accepted=Candidature::where('job_offer_id',$jobOffer->id)->where('status',CandidatureStatusEnum::Accepted->value)->get()->count();
         if ($request->status == CandidatureStatusEnum::Accepted->value and $jobOffer->number_of_positions == $accepted) {
@@ -82,6 +105,7 @@ class ManageCandidatureController extends Controller
                 $request->session()->flash('status-warning', 'You accepted the limit of the offer positions. Offer set to invisible.');
             }
         }
+        CandidatureStatusUpdated::dispatch($candidature);
         return back();
     }
 

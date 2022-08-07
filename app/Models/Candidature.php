@@ -15,12 +15,18 @@ class Candidature extends Model
     protected $casts = [
         'status'=> CandidatureStatusEnum::class
     ];
-
+    protected $with = [
+        'candidate'
+    ];
     public function candidate() {
         return $this->belongsTo(Candidate::class);
     }
 
     public function job_offer() {
         return $this->belongsTo(JobOffer::class);
+    }
+
+    public function interview() {
+        return $this->hasOne(Interview::class);
     }
 }
