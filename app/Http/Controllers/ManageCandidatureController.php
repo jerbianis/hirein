@@ -25,8 +25,8 @@ class ManageCandidatureController extends Controller
 
         $accepted=Candidature::where('job_offer_id',$jobOffer->id)->where('status',CandidatureStatusEnum::Accepted->value)->get()->count();
         $rejected=Candidature::where('job_offer_id',$jobOffer->id)->where('status',CandidatureStatusEnum::Rejected->value)->get()->count();
-        $offer_is_done = ($accepted + $rejected) != Candidature::where('job_offer_id', $jobOffer->id)->get()->count();
-        if ($jobOffer->number_of_positions == $accepted and $offer_is_done) {
+        $offer_is_not_done = ($accepted + $rejected) != Candidature::where('job_offer_id', $jobOffer->id)->get()->count();
+        if ($jobOffer->number_of_positions == $accepted and $offer_is_not_done) {
             $can_reject_the_rest = true;
         }else {
             $can_reject_the_rest = false;
@@ -96,7 +96,6 @@ class ManageCandidatureController extends Controller
                 ]);
             }
 
-            $interview->save();
         }
 
         $accepted=Candidature::where('job_offer_id',$jobOffer->id)->where('status',CandidatureStatusEnum::Accepted->value)->get()->count();
@@ -105,7 +104,7 @@ class ManageCandidatureController extends Controller
                 $request->session()->flash('status-warning', 'You accepted the limit of the offer positions. Offer set to invisible.');
             }
         }
-        CandidatureStatusUpdated::dispatch($candidature);
+        //CandidatureStatusUpdated::dispatch($candidature);
         return back();
     }
 
@@ -119,10 +118,16 @@ class ManageCandidatureController extends Controller
     {
         //
         $this->authorize('reject_the_rest', $jobOffer);
-        Candidature::where('job_offer_id',$jobOffer->id)
-            ->where('status','!=',CandidatureStatusEnum::Accepted->name)
-            ->update(['status'  =>  CandidatureStatusEnum::Rejected->name]);
+        $candidatures = Candidature::where('job_offer_id',$jobOffer->id)
+            ->where('status','!=',CandidatureStatusEnum::Accepted->name);
+        $candidatures->update(['status'  =>  CandidatureStatusEnum::Rejected->name]);
+
+        foreach ($candidatures->get() as $candidature) {
+            CandidatureStatusUpdated::dispatch($candidature);
+        }
+
         request()->session()->flash('status-warning', 'The rest of candidatures are rejected');
+
         return back();
     }
 }
