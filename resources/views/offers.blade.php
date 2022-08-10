@@ -36,9 +36,19 @@
                       <div class="card-text" style="margin-bottom: 0;font-size: 18px" >{{$offer->enterprise->name}}</div>
 
                       <div class="card-text" style="font-size: 14px; margin: 8px 0" >
-                        {{\Illuminate\Support\Str::limit($offer->description,100,'...')}}
+                        {{\Illuminate\Support\Str::limit($offer->description,300,'...')}}
                       </div>
+                            @if($offer->number_of_positions)
+                                <div class="card-text" style="font-size: 13px" >
+                                    <i class="fa-solid fa-chair" style="color:#5f6163; font-size: 13px" ></i>
+                                    {{$offer->number_of_positions}} @if($offer->number_of_positions > 1)
+                                        Places
+                                    @else
+                                        Place
+                                    @endif
 
+                                </div>
+                            @endif
                             @if($offer->type)
                                 <div class="card-text" style="font-size: 13px" >
                                     <i class="fa-solid fa-file-signature" style="color:#5f6163; font-size: 13px" ></i>
