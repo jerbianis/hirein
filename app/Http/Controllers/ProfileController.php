@@ -61,7 +61,7 @@ class ProfileController extends Controller
             $picture->storePubliclyAs('profile_pictures',$name,'public');
             $image = Image::make('storage/profile_pictures/'.$name);
             $image->orientate();
-            $image->widen(500)->resizeCanvas(500,500)->encode('jpg')->save();
+            $image->widen(500)->fit(500,500)->encode('jpg')->save();
             $candidate->picture =$name;
             $candidate->save();
             $request->session()->flash('status', 'Picture Uploaded Successfully');
@@ -122,7 +122,7 @@ class ProfileController extends Controller
             Storage::delete('public/profile_pictures/'.$candidate->picture);
             $candidate->picture ="picture.jpg";
             $candidate->save();
-            \request()->session()->flash('status-danger', 'CV Deleted Successfully');
+            \request()->session()->flash('status-danger', 'Picture Deleted Successfully');
         }
 
         return back();

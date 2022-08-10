@@ -33,9 +33,9 @@ class JobOfferController extends Controller
         //
         $job_offers=JobOffer::with('enterprise')
             ->where('visibility',true)
-            ->where('offer_start_on','<=',Carbon::now())
+            ->where('offer_start_on','<=',Carbon::today())
             ->where(function ($query) {
-                $query->where('offer_ends_on','>=',Carbon::now())
+                $query->where('offer_ends_on','>=',Carbon::today())
                 ->orwhere('offer_ends_on',null);
             })
             ->orderByDesc('offer_start_on')

@@ -16,6 +16,9 @@ class JobOffer extends Model
         'type'  =>  OfferTypeEnum::class,
         'degree'=>  DegreeTypeEnum::class
     ];
+    protected $with=[
+        'enterprise',
+    ];
 
     public function enterprise() {
         return $this->belongsTo(Enterprise::class);

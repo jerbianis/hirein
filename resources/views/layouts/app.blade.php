@@ -115,22 +115,38 @@
     bottom: 0;
     width: 100%;
     text-align: center;
-   
+
 " >
-    @if (session('status'))
-    <div class="alert alert-success" role="alert" style=" margin: 0" >
-        {{ session('status') }}
+        @if (session('status'))
+        <div class="alert alert-success" id="alert-success" role="alert" style=" margin: 0" >
+            {{ session('status') }}
+        </div>
+                <script>
+                    setTimeout(()=>{
+                        document.getElementById("alert-success").style.display = "none";
+                    },4000)
+                </script>
+        @endif
+        @if (session('status-warning'))
+            <div class="alert alert-warning" id="alert-warning"  role="alert" style=" margin: 0">
+                {{ session('status-warning') }}
+            </div>
+                <script>
+                    setTimeout(()=>{
+                        document.getElementById("alert-warning").style.display = "none";
+                    },4000)
+                </script>
+        @endif
+        @if (session('status-danger'))
+            <div class="alert alert-danger" id="alert-danger"  role="alert" style=" margin: 0">
+                {{ session('status-danger') }}
+            </div>
+                <script>
+                    setTimeout(()=>{
+                        document.getElementById("alert-danger").style.display = "none";
+                    },4000)
+                </script>
+        @endif
     </div>
-@endif
-@if (session('status-warning'))
-    <div class="alert alert-warning" role="alert" style=" margin: 0">
-        {{ session('status-warning') }}
-    </div>
-@endif
-@if (session('status-danger'))
-    <div class="alert alert-danger" role="alert" style=" margin: 0">
-        {{ session('status-danger') }}
-    </div>
-@endif</div>
 </body>
 </html>
