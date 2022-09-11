@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Enum\CandidatureStatusEnum;
 use App\Events\CandidatureStatusUpdated;
+use App\Models\Interview;
 use App\Models\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
@@ -53,11 +54,19 @@ class SendEmailWhenCandidatureStatusUpdated implements ShouldQueue
                 break;
 
             case CandidatureStatusEnum::Interview :
+                $interview=Interview::find($candidature->interview->id);
                 $secret = ENV('secretkey');
-                $generatedToken = substr(sha1($secret .  $candidature->interview->id), 0, 8) ;
-                $data = array("name" => "Anis", "body" => "http://127.0.0.1:8000/interview/" . $candidature->interview->id . "?token=" . $generatedToken);
-                Mail::send('emails.mail',$data,function ($msg) use ($to_name,$to_email) {
-                    $msg->to($to_email, $to_name)->subject("Laravel Test Mail");
+                $generatedToken = substr(sha1($secret .  $interview->id), 0, 8) ;
+                $data = array("name" => "Anis", "body" => "http://127.0.0.1:8000/interview/" . $interview->id . "?token=" . $generatedToken);
+                Mail::send('emails.mail',$data,function ($msg) use ($interview, $to_name,$to_email) {
+                    $interview->invited_email_list ?
+                        $msg->to($to_email, $to_name)
+                        ->cc($interview->invited_email_list)
+                        ->subject("Laravel Test Mail")
+                        :
+                        $msg->to($to_email, $to_name)
+                        ->subject("Laravel Test Mail");
+
                 });
                 break;
 

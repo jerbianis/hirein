@@ -16,7 +16,8 @@ class Candidature extends Model
         'status'=> CandidatureStatusEnum::class
     ];
     protected $with = [
-        'candidate'
+        'candidate',
+        'job_offer'
     ];
     public function candidate() {
         return $this->belongsTo(Candidate::class);

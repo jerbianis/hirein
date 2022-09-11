@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Enum\CandidatureStatusEnum;
 use App\Models\Candidate;
 use App\Models\Candidature;
+use App\Models\Enterprise;
 use App\Models\Interview;
 use App\Models\JobOffer;
 use Illuminate\Http\Request;
@@ -17,7 +19,19 @@ class InterviewController extends Controller
      */
     public function index()
     {
-        //
+        $joboffersids = JobOffer::without('enterprise')
+            ->where('enterprise_id', auth()->user()->profile_id)->get('id');
+        $candidaturesids=Candidature::where('status',CandidatureStatusEnum::Interview)
+            ->whereIn('job_offer_id',$joboffersids->toArray())->get('id');
+        $interviews = Interview::with('candidature')
+            ->whereIn('candidature_id',\Arr::pluck($candidaturesids->toArray(),'id') )
+            ->orderBy('start_on', 'asc')
+            ->get();
+
+        return view('enterprise.interviews',[
+            'interviews'    =>  $interviews
+        ]);
+
     }
 
     /**
@@ -41,8 +55,9 @@ class InterviewController extends Controller
         if ($generatedToken !== $token) {
 
             echo "Invalid interview access, try with: " . $generatedToken;
-            return;
+            abort(403,'Invalid interview access');
         }
+
         return view('interview', ['positionName' => $positionName, 'userName' => $userName]);
     }
 

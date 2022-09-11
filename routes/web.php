@@ -32,19 +32,21 @@ Route::get('/test', function () {
 });
 
 Route::get('/', function () {
-    return view('welcome');
+    return to_route('offers');
 });
 
 Auth::routes();
 
-Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
+//Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
+
 
 Route::get('/offers',[JobOfferController::class,'public'])->name('offers');
 
 
 /* Profile Auth*/
 Route::middleware(['auth'])->group(function () {
-    Route::get('profile/{user}',[ProfileController::class,'show'])->name('profile.show');
+    Route::get('profile/{candidate}',[ProfileController::class,'showCandidate'])->name('candidate.show');
+    Route::get('profile/{enterprise}',[ProfileController::class,'showEnterprise'])->name('enterprise.show');
     Route::get('/myprofile/edit/',[ProfileController::class,'edit'])->name('profile.edit');
 });
 
@@ -72,7 +74,10 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
     Route::get('jobOffer/{jobOffer}/candidatures', [ManageCandidatureController::class,'index'])->name('jobOffer.candidatures.index');
     Route::put('jobOffer/{jobOffer}/candidatures/{candidature}',[ManageCandidatureController::class,'update'])->name('jobOffer.candidatures.update');
     Route::patch('jobOffer/{jobOffer}/candidatures/',[ManageCandidatureController::class,'reject_the_rest'])->name('jobOffer.candidatures.reject_the_rest');
-    Route::resource('question', QuestionController::class);
+    Route::get('/quiz/create', function () {
+        return view('enterprise.quiz.index');
+    })->name('quiz.create');
+    Route::get('/interviews',[InterviewController::class,'index'])->name('interview.index');
 });
 
 

@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('interviews', function (Blueprint $table) {
             $table->id();
             $table->foreignId('candidature_id')->constrained();
-            $table->string('invited_email_list',500);
+            $table->string('invited_email_list',500)->nullable();
             $table->dateTime('start_on');
             $table->timestamps();
         });

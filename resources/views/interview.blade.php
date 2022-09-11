@@ -1,19 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Interview</title>
+@extends('layouts.app')
+@section('head')
     <script src='https://meet.jit.si/external_api.js'></script>
-</head>
-<body>
-
-<div id="interview_video_call"></div>
+@endsection
+@section('content')
+    <div class="container">
+        <div id="interview_video_call"></div>
+    </div>
 <script>
     const interviewName = '{{$positionName}}' + ' - ' + '{{$userName}}';
     const userName = '{{$userName}}';
     const domain = 'meet.jit.si';
     const options = {
         roomName: interviewName,
-        width: 800,
+        width: 1000,
         height: 800,
         userInfo: {
             displayName: userName
@@ -22,5 +21,4 @@
     };
     const api = new JitsiMeetExternalAPI(domain, options);
 </script>
-</body>
-</html>
+@endsection

@@ -8,21 +8,7 @@
                     <div class="card-header">{{$jobOffer->title}}</div>
 
                     <div class="card-body">
-                        @if (session('status'))
-                            <div class="alert alert-success" role="alert">
-                                {{ session('status') }}
-                            </div>
-                        @endif
-                        @if (session('status-warning'))
-                            <div class="alert alert-warning" role="alert">
-                                {{ session('status-warning') }}
-                            </div>
-                        @endif
-                        @if (session('status-danger'))
-                            <div class="alert alert-danger" role="alert">
-                                {{ session('status-danger') }}
-                            </div>
-                        @endif
+
                         @if ($can_reject_the_rest)
                             <form method="POST" action="{{route('jobOffer.candidatures.reject_the_rest',$jobOffer)}}">
                                 @method('PATCH')
@@ -32,7 +18,41 @@
                         @endif
 
                         @foreach ($candidatures as $candidature)
-                            {{$candidature}}
+                            <div>
+                                <div>
+                                    <img
+                                        src="{{asset('storage/profile_pictures/'.$candidature->candidate->picture)}}"
+                                        class="mx-auto d-block img-thumbnail rounded-circle w-25 mb-3"
+                                        alt="candidate picture"
+                                    >
+                                </div>
+                                <div>
+                                    <form method="GET" action="{{route('candidate.show',$candidature->candidate)}}">
+                                        <button type="submit" class="btn"><h2>{{$candidature->candidate->name}}</h2></button>
+                                    </form>
+                                </div>
+                                @if ($candidature->candidate->job_title)
+                                    <div class="text-secondary" >{{$candidature->candidate->job_title}}</div>
+                                @endif
+                                <div>Age: {{$candidature->candidate->birth_date}}</div>
+                                @if ($candidature->candidate->profile_resume)
+                                    <div>Profile Resume: {{$candidature->candidate->profile_resume}}</div>
+                                @endif
+                                @if ($candidature->candidate->CV_file)
+                                    <div class="ratio ratio-4x3 my-1">
+                                        <iframe src="{{asset('storage/CV/'.$candidature->candidate->CV_file)}}#view=FitH" >
+                                            This browser does not support PDFs.
+                                        </iframe>
+                                    </div>
+                                @endif
+                                @if ($candidature->cover_letter)
+                                    <h4>Cover Letter</h4>
+                                    <div>
+                                        {{$candidature->cover_letter}}
+                                    </div>
+                                @endif
+                            </div>
+                            <br>
                             <form method="POST" action="{{route('jobOffer.candidatures.update',[$jobOffer,$candidature])}}">
                                 @method('PUT')
                                 @csrf
@@ -56,8 +76,13 @@
                                 @endforeach
                             </select>
                                 <div id="interview{{$candidature->id}}" style="display: none;">
-                                    <input type="text" name="emails">
-                                    <input type="datetime-local" name="start_on">
+                                    <input class="form-control" placeholder="invited emails seperated by ;" type="text" name="emails" id="emails">
+                                    <input class="form-control @error('start_on') is-invalid @enderror" type="datetime-local" name="start_on">
+                                    @error('start_on')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
                                 </div>
                                 <button id="button{{$candidature->id}}" type="submit" class="btn btn-outline-secondary" disabled>Change Status</button>
                             </form>

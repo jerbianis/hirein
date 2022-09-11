@@ -18,6 +18,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    @yield('head')
 </head>
 <body>
     <div id="app">
@@ -54,10 +55,22 @@
                                     @endif" href="{{ route('jobOffer.index') }}">My Job Offers</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link @if (Route::is('question.index'))
-                                    active
-                                @endif" href="{{ route('question.index') }}">Questions</a>
+                                    <a class="nav-link @if (Route::is('interview.index'))
+                                        active
+                                    @endif" href="{{ route('interview.index') }}">Interviews</a>
                                 </li>
+
+                                    <li class="nav-item dropdown">
+                                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                            Quiz
+                                        </a>
+
+                                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                            <a class="nav-link @if (Route::is('quiz.create'))
+                                            active
+                                        @endif" href="{{ route('quiz.create') }}">Create Quiz</a>
+                                        </div>
+                                    </li>
                             @endif
                         @endauth
                     </ul>

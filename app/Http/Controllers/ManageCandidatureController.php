@@ -74,12 +74,9 @@ class ManageCandidatureController extends Controller
     {
         //
         $this->authorize('update', [Candidature::class,$candidature]);
-        if ($candidature->update(['status'=> $request->status])) {
-            $request->session()->flash('status', 'Status Changed Successfully');
-        }
-        if ($candidature->status == CandidatureStatusEnum::Interview) {
+        if ($request->status == CandidatureStatusEnum::Interview->value) {
             $request->validate([
-                'start_on'=>['required','date','after_or_equal:today']
+                'start_on'=>['required','date','after_or_equal:now']
             ]);
 
             if ($interview= $candidature->interview()->first()) {
@@ -98,13 +95,18 @@ class ManageCandidatureController extends Controller
 
         }
 
+        if ($candidature->update(['status'=> $request->status])) {
+            $request->session()->flash('status', 'Status Changed Successfully');
+        }
+
+
         $accepted=Candidature::where('job_offer_id',$jobOffer->id)->where('status',CandidatureStatusEnum::Accepted->value)->get()->count();
         if ($request->status == CandidatureStatusEnum::Accepted->value and $jobOffer->number_of_positions == $accepted) {
             if ($jobOffer->update(['visibility' => false])) {
                 $request->session()->flash('status-warning', 'You accepted the limit of the offer positions. Offer set to invisible.');
             }
         }
-        //CandidatureStatusUpdated::dispatch($candidature);
+        CandidatureStatusUpdated::dispatch($candidature);
         return back();
     }
 

@@ -17,10 +17,17 @@ class ProfileController extends Controller
 {
     //
     /**
-     * @param User $user
+     * @param Candidate $candidate
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user) {
+    public function showCandidate(Candidate $candidate) {
+
+    }
+    /**
+     * @param Enterprise $enterprise
+     * @return \Illuminate\Http\Response
+     */
+    public function showEnterprise(Enterprise $enterprise) {
 
     }
 
